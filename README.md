@@ -1,12 +1,20 @@
 Introduction
 ============
-A sample OAUTH resource server. The goal of this project is to provide an API with simple CRUD access for a multi-tenant system.
+
+This projects is a proof-of-concept for a multi-tenant REST based API. The API is secured using OAUTH2 and therefore acts as an
+OAUTH2 resource server. The goal of this project is to demonstrate how a REST API can support multi-tenant with respect to 
+delagated authorization.
 
 There are two types of objects that can be managed by this API:
   * Company
   * User
 
-  
+There are 3 basic security roles that a user can have:
+  * ROLE_SUPERADMIN - Allowed to do anything
+  * ROLE_COMPANYADMIN:[COMPANY] - A client with this role is able to perform adminstrative functions on the company to which the roles is assigned.
+  * ROLE_USER:[USER] - A client with this role is able to perform administrative functions on the user to which the role is assigned.
+
+
 Data
 ====
 The data is stored in a mysql table and sample data is included and loaded as part of the launch of the SpringBoot application.
@@ -18,6 +26,7 @@ Repository -> Model -> Mapper -> DTO -> Controller
 
 Security
 ========
+
 Authentication
 --------------
 Users authenticate to the sample OAUTH AS to obtain a JWT based access token.
@@ -39,7 +48,7 @@ The following table desribes the required roles:
 A ROLE_SUPERUSER is a static role that grants global rights across all objects. The ROLE_COMPANYAMDIN and ROLE_USER rights 
 are assigned to particular objects. For example:
   * **ROLE_COMPANYAMDIN:INITECH** - This grants the client access to perform any action that requires the ROLE_COMPANYAMDIN role but only against the INITECH company.
-  * **ROLE_USER:user1@INITECH-USER1** - This grants the client access to perform any action that requires the ROLE_USER role but only against USER1 of the INITECH company.
+  * **ROLE_USER:INITECH-USER1** - This grants the client access to perform any action that requires the ROLE_USER role but only against USER1 of the INITECH company.
 
 This is currently implemented in the controller using the @PreAuthorize annotation. It directs the framework to call the RoleChecker.hasValidRole() method passing in the 
 value of the company and user that are being passed on the query string.
@@ -65,23 +74,27 @@ in the object can only be modified based on the role of the user. The following 
 This is is currently implemented in the mapper classes that ModelDTOMapper class. It uses reflections to copy data from the entity to the DTO or vise-versa and analyzes the 
 ModelMapper annotations on the properties of the DTO class. For example:
 
-    public class UserDTO {
-    	protected String companyName;
-        protected String login;
-        
-        @ModelMapper(readRoles = {"ROLE_SUPERADMIN", "ROLE_COMPANYADMIN"}, writeRoles = {"ROLE_SUPERADMIN", "ROLE_COMPANYADMIN"} )
-        protected String password;
+```
+public class UserDTO {
+	protected String companyName;
+    protected String login;
     
-        @ModelMapper(readRoles = {"ROLE_SUPERADMIN"}, writeRoles = {"ROLE_SUPERADMIN"} )
-        protected Long quota;
-    
-        @ModelMapper(readRoles = {"ROLE_SUPERADMIN"}, writeRoles = {"ROLE_SUPERADMIN"} )
-        protected Boolean enabled;
-    }
+    @ModelMapper(readRoles = {"ROLE_SUPERADMIN", "ROLE_COMPANYADMIN"}, writeRoles = {"ROLE_SUPERADMIN", "ROLE_COMPANYADMIN"} )
+    protected String password;
+
+    @ModelMapper(readRoles = {"ROLE_SUPERADMIN"}, writeRoles = {"ROLE_SUPERADMIN"} )
+    protected Long quota;
+
+    @ModelMapper(readRoles = {"ROLE_SUPERADMIN"}, writeRoles = {"ROLE_SUPERADMIN"} )
+    protected Boolean enabled;
+}
+```
 
 To Do
 =====
 The primary items that are required are:
-# Evalution of the field level security. Is there a better Springy way to implement this?
-# Integration tests without the need for the AS
-# End to end tests that require the AS (?)
+
+* Upgrade to latest spring-boot
+* Evalution of the current implementation of field level security. Is there a better *Springy* way to implement this?
+* Integration tests without the need for the AS
+* End to end tests that require the AS (?)
