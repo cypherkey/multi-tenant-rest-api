@@ -90,11 +90,37 @@ public class UserDTO {
 }
 ```
 
+Tests
+=====
+The following are the required test cases:
+
+| Object | Test | Expected Result |
+|--------|------|-----------------|
+| Company | List all companies with role ROLE_SUPERADMIN | Successfully retrieve all 2 companies |
+| Company | List all companies with role ROLE_COMPANYADMIN:INITECH | Success and result should only contain INITECH |
+| Company | List all companies with roles ROLE_COMPANYADMIN:INITECH and ROLE_COMPANYADMIN:ACME | Successful and result should only contain INITECT and ACME and not UMBRELLA |
+| Company | List all companies with role ROLE_USER:INITECH-USER1 | Access denied |
+| Company | Create a new company with role ROLE_SUPERADMIN | Company is successfully created |
+| Company | Create a new company with role ROLE_COMPANYADMIN:INITECH | Access denied |
+| Company | Create a new company with role ROLE_USER:INITECH-USER1 | Access denied |
+| Company | Retreive (get) the INITECH company with role ROLE_SUPERADMIN | Success and all fields are present |
+| Company | Retreive (get) the INITECH company with role ROLE_COMPANYADMIN:INITECH | Success and fields maxAccounts and maxsize are null |
+| Company | Retreive (get) the INITECH company with role ROLE_COMPANYADMIN:ACME | Access denied |
+| Company | Retreive (get) the INITECH company with role ROLE_USER:INITECH-USER1 | Access denied |
+| Company | Edit field maxAccounts of company object INITECH as ROLE_SUPERUSER | Success |
+| Company | Edit field maxAccounts of company object INITECH as ROLE_COMPANYADMIN:INITECH | Access Denied |
+| Company | Edit field maxAccounts of company object INITECH as ROLE_COMPANYADMIN:ACME | Access Denied |
+| Company | Edit field maxAccounts of company object INITECH as ROLE_USER:INITECH-USER1 | Access Denied |
+| Company | Edit field contactEmail of company object INITECH as ROLE_SUPERUSER | Success |
+| Company | Edit field contactEmail of company object INITECH as ROLE_COMPANYADMIN:INITECH | Success |
+| Company | Edit field contactEmail of company object INITECH as ROLE_COMPANYADMIN:ACME | Access Denied |
+| Company | Edit field contactEmail of company object INITECH as ROLE_USER:INITECH-USER1 | Access Denied |
+
 To Do
 =====
 The primary items that are required are:
 
-* Upgrade to latest spring-boot
+* Upgrade to latest spring-boot (1.5.4 or otherwise)
 * Evalution of the current implementation of field level security. Is there a better *Springy* way to implement this?
-* Integration tests without the need for the AS
+* Integration tests without the need for the OAUTH2 authorization server (AS)
 * End to end tests that require the AS (?)
