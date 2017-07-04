@@ -121,6 +121,7 @@ To Do
 The primary items that are required are:
 
 * Upgrade to latest spring-boot (1.5.4 or otherwise)
+* Move application.properties to yml
 * Evalution of the current implementation of field level security. Is there a better *Springy* way to implement this?
 * Integration tests without the need for the OAUTH2 authorization server (AS)
 * End to end tests that require the AS (?)
