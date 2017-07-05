@@ -124,3 +124,9 @@ The primary items that are required are:
 * Evalution of the current implementation of field level security. Is there a better *Springy* way to implement this?
 * Integration tests without the need for the OAUTH2 authorization server (AS)
 * End to end tests that require the AS (?)
+
+Reference/Notes
+===============
+* https://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#el-access
+* http://www.cowtowncoder.com/blog/archives/2011/02/entry_443.html
+* https://stackoverflow.com/questions/28878488/dynamic-selection-of-jsonview-in-spring-mvc-controller
