@@ -131,3 +131,4 @@ Reference/Notes
 * https://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#el-access
 * http://www.cowtowncoder.com/blog/archives/2011/02/entry_443.html
 * https://stackoverflow.com/questions/28878488/dynamic-selection-of-jsonview-in-spring-mvc-controller
+* http://www.baeldung.com/jackson-json-view-annotation
