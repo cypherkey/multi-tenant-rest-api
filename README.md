@@ -152,4 +152,5 @@ Reference/Notes
 * https://stackoverflow.com/questions/28878488/dynamic-selection-of-jsonview-in-spring-mvc-controller
 * http://www.baeldung.com/jackson-json-view-annotation
 * https://github.com/timtebeek/resource-server-testing
+* http://www.concretepage.com/spring-4/spring-4-security-junit-test-with-withmockuser-and-withuserdetails-annotation-example-using-webappconfiguration
 
