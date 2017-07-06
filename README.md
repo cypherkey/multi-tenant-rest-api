@@ -154,3 +154,4 @@ Reference/Notes
 * https://github.com/timtebeek/resource-server-testing
 * http://www.concretepage.com/spring-4/spring-4-security-junit-test-with-withmockuser-and-withuserdetails-annotation-example-using-webappconfiguration
 * https://stackoverflow.com/questions/30638047/deserialize-jackson-in-spring-boot
+* https://dzone.com/articles/simple-attribute-based-access-control-with-spring
