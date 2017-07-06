@@ -63,7 +63,7 @@ in the object can only be modified based on the role of the user. The following 
 | Company | name         |        X              |         X                |                  |       X                |                           |                   |
 | Company | contactName  |        X              |         X                |                  |       X                |         X                 |                   |
 | Company | contactEmail |        X              |         X                |                  |       X                |         X                 |                   |
-| Company | maxAccounts  |        X              |                          |                  |       X                |         X                 |                   |
+| Company | maxAccounts  |        X              |         X                |                  |       X                |                           |                   |
 | Company | maxsize      |        X              |                          |                  |       X                |                           |                   |
 | User    | companyName  |        X              |         X                |                  |       X                |                           |                   |
 | User    | login        |        X              |         X                |     X            |       X                |                           |                   |
@@ -71,8 +71,7 @@ in the object can only be modified based on the role of the user. The following 
 | User    | quota        |        X              |         X                |                  |       X                |                           |     X             |
 | User    | enabled      |        X              |         X                |                  |       X                |         X                 |     X             |
 
-This is is currently implemented in the mapper classes that ModelDTOMapper class. It uses reflections to copy data from the entity to the DTO or vise-versa and analyzes the 
-ModelMapper annotations on the properties of the DTO class. For example:
+This is is currently implemented in the mapper classes that ModelDTOMapper class. It uses reflections to copy data from the entity to the DTO or vise-versa and analyzes the ModelMapper annotations on the properties of the DTO class. For example:
 
 ```
 public class UserDTO {
@@ -90,9 +89,14 @@ public class UserDTO {
 }
 ```
 
+The solution should be generic and ideally use annotations on the DTO. Logic should not be built-in to the program using if statements.
+
 Tests
 =====
-The following are the required test cases:
+
+OAUTH tests
+-----------
+The purpose of the following tests is to ensure the controller performs the necessary access control checks. The tests should emulate  the prinicipal and roles that would have been granted by the OAUTH2 bearer token. 
 
 | Object | Test | Expected Result |
 |--------|------|-----------------|
@@ -116,6 +120,21 @@ The following are the required test cases:
 | Company | Edit field contactEmail of company object INITECH as ROLE_COMPANYADMIN:ACME | Access Denied |
 | Company | Edit field contactEmail of company object INITECH as ROLE_USER:INITECH-USER1 | Access Denied |
 
+Field security tests
+--------------------
+The objective of these tests is to ensure the field level security properly works.
+
+| Object | Test | Expected Result |
+|--------|------|-----------------|
+| Company | Get company as ROLE_SUPERADMIN | Success and all 5 attributes (name, contactName, contactEmail, maxAccounts, maxSize) are visible |
+| Company | Get company as ROLE_COMPANYADMIN:[COMPANY] | Success but the maxSize attribute is null or missing |
+| Company | Update contactEmail for a company as ROLE_SUPERADMIN | Success |
+| Company | Update maxAccounts for a company as ROLE_SUPERADMIN | Success |
+| Company | Update maxSize for a company as ROLE_SUPERADMIN | Success |
+| Company | Update contactEmail for a company as ROLE_COMPANYADMIMN:[COMPANY] | Success |
+| Company | Update maxAccounts for a company as ROLE_COMPANYADMIMN:[COMPANY] | Access denied |
+| Company | Update maxSize for a company as ROLE_COMPANYADMIMN:[COMPANY] | Access denied |
+
 To Do
 =====
 The primary items that are required are:
@@ -132,3 +151,5 @@ Reference/Notes
 * http://www.cowtowncoder.com/blog/archives/2011/02/entry_443.html
 * https://stackoverflow.com/questions/28878488/dynamic-selection-of-jsonview-in-spring-mvc-controller
 * http://www.baeldung.com/jackson-json-view-annotation
+* https://github.com/timtebeek/resource-server-testing
+
