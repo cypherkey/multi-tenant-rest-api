@@ -153,4 +153,4 @@ Reference/Notes
 * http://www.baeldung.com/jackson-json-view-annotation
 * https://github.com/timtebeek/resource-server-testing
 * http://www.concretepage.com/spring-4/spring-4-security-junit-test-with-withmockuser-and-withuserdetails-annotation-example-using-webappconfiguration
-
+* https://stackoverflow.com/questions/30638047/deserialize-jackson-in-spring-boot
