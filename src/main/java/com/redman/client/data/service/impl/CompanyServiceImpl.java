@@ -1,5 +1,7 @@
 package com.redman.client.data.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,5 +24,9 @@ public class CompanyServiceImpl implements CompanyService {
 	
 	public CompanyDTO findByName(String name) {
 		return CompanyMapper.mapEntityIntoDTO(CompanyDao.findByName(name));
+	}
+	
+	public List<CompanyDTO> findAll() {
+		return CompanyMapper.mapEntitiesIntoDTOs(CompanyDao.findAll());
 	}
 }
