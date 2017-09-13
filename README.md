@@ -24,6 +24,62 @@ Data flows from the database to the controller in the following manner:
 Repository -> Model -> Mapper -> DTO -> Controller
 
 
+Using the service
+=================
+
+This project is acting as an OAUTH2 resource server. As such an OAUTH2 bearer token is required. Currently this service is configured
+to accept OAUTH2 tokens (non-JWT). These tokens contain no data as they are just a GUID. The authorization service must be running so
+that the resource server can validate and obtain information on the user. 
+
+Obtaining an access token
+-------------------------
+Using a testing tool like SoapUI, Advanced REST client or POSTMAN, a HTTP POST request must be made to the authorization server running on port 8081:
+
+```
+METHOD: POST
+HEADER: Authorization: Basic bXlhcHA6c2VjcmV0
+URL: http://localhost:8081/oauth/token?client_id=myapp&grant_type=password&scope=read&username=admin@provider.com&password=secret
+```
+
+This should return a HTTP 200 and an access token. For example:
+
+```
+{
+"access_token": "4da99d56-59f4-47b1-a066-79d3cf4d4af3",
+"token_type": "bearer",
+"refresh_token": "c680406d-80ad-4fa6-8e33-aa6f05024e99",
+"expires_in": 3033,
+"scope": "read"
+}
+```
+
+Using the token to access the service
+-------------------------------------
+Using the testing tool, a HTTP request is made to the resource server running on port 8082.
+
+```
+METHOD: GET
+HEADER: Authorization: Bearer 4da99d56-59f4-47b1-a066-79d3cf4d4af3
+URL: http://localhost:8082/resource-server/company/acme/user/acme-user1
+```
+
+This performs obtains the details on ACME-USER1.
+
+User accounts
+-------------
+The following shows the available users and their roles
+| User              | Roles                  |
+|:----:             | :---:                  |
+|admin@provider.com | ROLE_SUPERADMIN        |
+|admin@acme.com     | ROLE_COMPANYADMIN:ACME |
+|admin@initech.com  | ROLE_COMPANYADMIN:ACME, ROLE_COMPANYADMIN:INITECH |
+|user1@acme.com     | ROLE_USER:ACME-USER1 |
+|user2@acme.com     | ROLE_USER:ACME-USER1, ROLE_USER:ACME-USER2 |
+|user1@initech.com  | ROLE_USER:INITECH-USER1 |
+|user2@initech.com  | ROLE_USER:INITECH-USER2 |
+
+The password for each of these user acocunts is secret.
+
 Security
 ========
 
@@ -134,6 +190,7 @@ The objective of these tests is to ensure the field level security properly work
 | Company | Update contactEmail for a company as ROLE_COMPANYADMIMN:[COMPANY] | Success |
 | Company | Update maxAccounts for a company as ROLE_COMPANYADMIMN:[COMPANY] | Access denied |
 | Company | Update maxSize for a company as ROLE_COMPANYADMIMN:[COMPANY] | Access denied |
+
 
 To Do
 =====
