@@ -17,23 +17,55 @@ There are 3 basic security roles that a user can have:
 
 Data
 ====
-The data is stored in a mysql table and sample data is included and loaded as part of the launch of the SpringBoot application.
+The data is stored in a mysql table and sample data is included and loaded as part of the launch of the SpringBoot application. The two files 
+that store the data are in src/main/resources:
+* schema.sql - The database schema
+* data.sql - The data
+
+Available user accounts
+-----------------------
+
+| Company | User           |
+| :-----: | :----:         | 
+| ACME    | acme-user 1    |
+| ACME    | acme-user 2    |
+| ACME    | acme-user 3    |
+| INITECH | initech-user 1 |
+| INITECH | initech-user 2 |
+| INITECH | initech-user 3 |
+
+Design
+======
 
 Data flows from the database to the controller in the following manner:
 
 Repository -> Model -> Mapper -> DTO -> Controller
 
+Endpoints
+=========
+The following endpoints are exposed.
 
-Using the service
-=================
+| URL                                | METHOD | Description        | Example     |
+|:--------                           | :----- | :---------         | :---------- |
+| /company                           | GET    | List all companies |  |
+| /company                           | POST   | Create a company   |  |
+| /company/{companyid}               | GET    | Get the details of the specified company  | /company/acme |
+| /company/{companyid}/user          | POST   | Create a new user for the specified company  | /company/acme/user |
+| /company/{companyid}/user/{userid} | GET    | Get the details for the specified user  | /company/acme/user/acme-user1 |
 
-This project is acting as an OAUTH2 resource server. As such an OAUTH2 bearer token is required. Currently this service is configured
-to accept OAUTH2 tokens (non-JWT). These tokens contain no data as they are just a GUID. The authorization service must be running so
-that the resource server can validate and obtain information on the user. 
+
+Authenticating to the service
+=============================
+This project is acting as an OAUTH2 resource server. As such an OAUTH2 bearer token is required. Since JWT tokens are not
+being used, the OAUTH RS must be able to contact the OAUTH AS to validate the tokens.
+
+The OAUTH2 authorization server (AS) is available as a separate project and must be running separately on port 8081. The 
+authorization service must be running so that the resource server can validate and obtain information on the user. 
 
 Obtaining an access token
 -------------------------
-Using a testing tool like SoapUI, Advanced REST client or POSTMAN, a HTTP POST request must be made to the authorization server running on port 8081:
+Using a testing tool like SoapUI, Advanced REST client or POSTMAN, a HTTP POST request must be made to the authorization server running
+on port 8081.
 
 ```
 METHOD: POST
