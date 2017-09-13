@@ -67,13 +67,14 @@ This performs obtains the details on ACME-USER1.
 
 User accounts
 -------------
-The following shows the available users and their roles
-| User              | Roles                  |
-|:----:             | :---:                  |
-|admin@provider.com | ROLE_SUPERADMIN        |
-|admin@acme.com     | ROLE_COMPANYADMIN:ACME |
+The following shows the available users and their roles.
+
+| User              | Roles                   |
+|:------------------|:------------------------|
+|admin@provider.com | ROLE_SUPERADMIN         |
+|admin@acme.com     | ROLE_COMPANYADMIN:ACME  |
 |admin@initech.com  | ROLE_COMPANYADMIN:ACME, ROLE_COMPANYADMIN:INITECH |
-|user1@acme.com     | ROLE_USER:ACME-USER1 |
+|user1@acme.com     | ROLE_USER:ACME-USER1    |
 |user2@acme.com     | ROLE_USER:ACME-USER1, ROLE_USER:ACME-USER2 |
 |user1@initech.com  | ROLE_USER:INITECH-USER1 |
 |user2@initech.com  | ROLE_USER:INITECH-USER2 |
